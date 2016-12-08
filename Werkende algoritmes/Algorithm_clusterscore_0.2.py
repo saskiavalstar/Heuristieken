@@ -9,7 +9,7 @@ def bfsalgorithm(genome, genome_goal):
     genome_list = list()
     genome_list.append(genome)
 
-    # Arcive to maintain memory of genomes and path
+    # Archive to maintain memory of genomes and path
     archive = {}
     archive[tuple(genome)] = None
 
@@ -29,7 +29,7 @@ def bfsalgorithm(genome, genome_goal):
                 return genome_list, len(genome_list) - 2
 
         # Filter layers
-        genome_list = filter_genomes(genome_list, 0.3)
+        genome_list = filter_genomes(genome_list, 0.2)
 
 # Takes a set and returns the best (according to our score formula) fraction.
 def filter_genomes(genome_list, fraction_returned):
@@ -47,6 +47,9 @@ def filter_genomes(genome_list, fraction_returned):
         filtered_list = list()
         for genome in score_set[1]:
             filtered_list.append(list(genome))
+
+    score_archive.clear()
+    sorted_score.clear()
 
     return filtered_list
 
@@ -89,6 +92,7 @@ def cluster_score(genome):
     # clusterscore forward
     for i in range(len(genome) - 1):
         # onnodig dubbel met de tweede if conditie
+        # checks if next element is equal to current element
         if genome[i] != (genome[i + 1] - 1):
             in_cluster_fw = False
         else:
@@ -143,8 +147,11 @@ genome = [23, 1, 2, 11, 24, 22, 19, 6, 10, 7, 25, 20, 5, 8, 18, 12, 13, 14, 15, 
 genomegoal2 = range(1,18)
 genome2 = [4,2,14,13,3,8,15,12,5,16,17,11,7,6,10,1,9]
 start_time = time.time()
-path, score = bfsalgorithm(genome, genomegoal)
+path, score = bfsalgorithm(genome2, genomegoal2)
 print (time.time() - start_time)
 for route in path:
     print route
 print len(path) - 2
+
+# TODO: Weghalen: deel van child_archive (daarin wordt het path bepaald, dus duizend data die weg kan)
+# TODO: Weghalen: score archief.
