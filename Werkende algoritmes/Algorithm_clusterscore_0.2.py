@@ -29,7 +29,7 @@ def bfsalgorithm(genome, genome_goal):
                 return genome_list, len(genome_list) - 2
 
         # Filter layers
-        genome_list = filter_genomes(genome_list, 0.2)
+        genome_list = filter_genomes(genome_list, 0.3)
 
 # Takes a set and returns the best (according to our score formula) fraction.
 def filter_genomes(genome_list, fraction_returned):
@@ -79,25 +79,51 @@ def reverse_sublist(lst, start, end):
     return lst
 
 def cluster_score(genome):
-    cluster_count = 0
-    cluster_cover = 0
-    in_cluster = False
+    cluster_count_fw = 0
+    cluster_count_bw = 0
+    cluster_cover_fw = 0
+    cluster_cover_bw = 0
+    in_cluster_fw = False
+    in_cluster_bw = False
 
+    # clusterscore forward
     for i in range(len(genome) - 1):
+        # onnodig dubbel met de tweede if conditie
         if genome[i] != (genome[i + 1] - 1):
-            in_cluster = False
+            in_cluster_fw = False
         else:
-            cluster_cover += 1
-        if not in_cluster:
-            if genome[i + 1] - 2 == genome[i] - 1:
-                in_cluster = True
-                cluster_count += 1
+            cluster_cover_fw += 1
+        if not in_cluster_fw:
+            # wat doet dit stukje?
+            if genome[i] == genome[i + 1] - 1:
+                in_cluster_fw = True
+                cluster_count_fw += 1
 
-    cluster_cover += cluster_count
-    cluster_count_all = (len(genome) - cluster_cover) + cluster_count
-    score = (cluster_cover / cluster_count_all)
+    # clusterscore backward
+    for i in range(len(genome) - 1):
+        if genome[i] != (genome[i + 1] + 1):
+            in_cluster_bw = False
+        else:
+            cluster_cover_bw += 1
+        if not in_cluster_bw:
+            if genome[i] == genome[i + 1] + 1:
+                in_cluster_bw = True
+                cluster_count_bw += 1
+
+    # calculates total cover (including the first element of a cluster)
+    cluster_cover_fw += cluster_count_fw
+    cluster_cover_bw += cluster_count_bw
+
+    # calculates total coverage
+    cluster_cover_total = cluster_cover_fw + cluster_cover_bw
+
+    # number of clusters
+    cluster_count_all = (len(genome) - cluster_cover_total) + cluster_count_fw + cluster_count_bw
+
+    # calculates score
+    score = (cluster_cover_total / cluster_count_all)
+
     return score
-
 
 def allswaps(genome):
     # Swaps all items in list and returns all results.
@@ -114,8 +140,8 @@ def allswaps(genome):
 genomegoal = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25]
 genome = [23, 1, 2, 11, 24, 22, 19, 6, 10, 7, 25, 20, 5, 8, 18, 12, 13, 14, 15, 16, 17, 21, 3, 4, 9]
 
-genomegoal2 = range(1,11)
-genome2 = [4,2,3,8,5,7,6,10,1,9]
+genomegoal2 = range(1,18)
+genome2 = [4,2,14,13,3,8,15,12,5,16,17,11,7,6,10,1,9]
 start_time = time.time()
 path, score = bfsalgorithm(genome, genomegoal)
 print (time.time() - start_time)

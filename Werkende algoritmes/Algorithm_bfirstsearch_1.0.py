@@ -16,7 +16,7 @@ def bfsalgorithm(genome, genome_goal):
     archive[tuple(genome)] = None
 
     # Settings:
-    layers_before_check = 2
+    layers_before_check = 3
 
     # Bugcheck:
     duplicates = 0
