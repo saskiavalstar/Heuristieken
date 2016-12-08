@@ -1,6 +1,5 @@
 # alle swaps, 2 for loops
-import  time
-import queue
+import time
 
 def reverse_sublist(lst,start,end):
     lst[start:end] = lst[start:end][::-1]
